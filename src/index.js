@@ -1,3 +1,4 @@
-// index.js entry point
+import { createATodo } from "./todos-creator.js";
 
-console.log("Hi there!");
+// Attach to the global window object
+window.createATodo = createATodo;

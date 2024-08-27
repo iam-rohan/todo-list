@@ -10,6 +10,5 @@ module.exports = merge(common, {
       directory: path.join(__dirname, "dist"),
     },
     open: true,
-    watchFiles: ["./src/index.html"],
   },
 });

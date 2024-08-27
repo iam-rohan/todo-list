@@ -8,6 +8,9 @@ module.exports = {
     filename: "main.js",
     clean: true,
   },
+  devServer: {
+    watchFiles: "./src/template.html",
+  },
   module: {
     rules: [
       {
