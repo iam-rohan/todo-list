@@ -1,3 +1,4 @@
+import { format, compareAsc } from "date-fns";
 let myTodos = [];
 
 function Todos(title, description, dueDate, priority) {
@@ -14,12 +15,27 @@ Todos.prototype.logout = function () {
 export function createATodo() {
   const title = prompt("Enter Title:");
   const description = prompt("Enter Description:");
-  const dueDate = prompt("Enter Due Date:");
+  const dueDate = format(new Date(prompt("Enter Due Date:")), "MM/dd/yyyy");
   const priority = prompt("Enter Priority:");
+
+  console.log(typeof dueDate);
+  console.log(dueDate);
 
   const newTodo = new Todos(title, description, dueDate, priority);
 
   myTodos.push(newTodo);
   newTodo.logout();
   console.log(myTodos);
+  sortTodos();
+}
+
+function sortTodos() {
+  const unSequencedDates = [];
+  myTodos.forEach((dueDate, index) => {
+    unSequencedDates.push(myTodos[index].dueDate);
+  });
+  console.log(unSequencedDates);
+  let sequencedTodos = [];
+  sequencedTodos = unSequencedDates.sort(compareAsc);
+  console.log(sequencedTodos);
 }
