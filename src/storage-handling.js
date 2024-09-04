@@ -1,12 +1,19 @@
 import { compareAsc } from "date-fns";
 export let myTodos = [];
+import { Project, projects } from "./project-creator";
 
 if (!localStorage.getItem("0")) {
   populateStorage();
-  console.log("i should run always");
+  console.log("Here the content on the library is being pushed to the storage");
 } else {
   getFromStorage();
-  console.log("i should only run once in the start of system");
+  console.log("Here the storage content is being pulled");
+  const defaultProject = new Project("Default");
+  projects.push(defaultProject);
+  defaultProject.todos = [];
+  myTodos.forEach((item) => {
+    defaultProject.todos.push(item);
+  });
 }
 
 export function sortTodos() {
