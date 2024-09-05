@@ -1,15 +1,18 @@
 import { myTodos } from "./storage-handling";
+import { landing } from "./ui-handling";
 
 const projects = [];
 
 function Project(name) {
   this.name = name;
+  this.todos = [];
 }
 
 function createProject() {
   const name = prompt("Enter the name of Project: ");
   const newProject = new Project(name);
   projects.push(newProject);
+  landing();
 }
 
 Project.prototype.assignTodos = function () {

@@ -9,7 +9,7 @@ function landing() {
   //Main Heading
   const heading = document.createElement("h1");
   heading.classList.add("heading");
-  heading.textContent = "Get it Done";
+  heading.textContent = "Let's Get it Done!";
   container.appendChild(heading);
 
   //SideView Section
@@ -42,12 +42,18 @@ function landing() {
   //To Show in a structured way the present projects and their todos
   const structuredShow = document.createElement("div");
   structuredShow.classList.add("structuredShow");
+  const projectHeading = document.createElement("h3");
+  projectHeading.classList.add("projectHeading");
+  projectHeading.textContent = "Projects and their Todos";
+  structuredShow.appendChild(projectHeading);
+  const projectsCollection = document.createElement("div");
+  projectsCollection.classList.add("projectsCollection");
 
   //To iterate over the available projects and their respective todos to render dynamically
   projects.forEach((item) => {
     const aProjectView = document.createElement("div");
     aProjectView.classList.add("aProjectView");
-    const projectName = document.createElement("h3");
+    const projectName = document.createElement("h4");
     projectName.classList.add("projectName");
     projectName.textContent = item.name;
 
@@ -64,7 +70,8 @@ function landing() {
 
     aProjectView.appendChild(projectName);
     aProjectView.appendChild(projectTodosView);
-    structuredShow.appendChild(aProjectView);
+    projectsCollection.appendChild(aProjectView);
+    structuredShow.appendChild(projectsCollection);
   });
 
   mainView.appendChild(structuredShow);

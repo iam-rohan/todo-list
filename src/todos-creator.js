@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { populateStorage, myTodos, sortTodos } from "./storage-handling";
+import { landing } from "./ui-handling";
 
 function Todos(title, description, dueDate, priority) {
   this.title = title;
@@ -19,6 +20,7 @@ function createATodo() {
   myTodos.push(newTodo);
   populateStorage();
   sortTodos();
+  landing();
 }
 
 export { createATodo };

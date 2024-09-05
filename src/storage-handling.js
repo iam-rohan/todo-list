@@ -1,6 +1,7 @@
 import { compareAsc } from "date-fns";
 export let myTodos = [];
 import { Project, projects } from "./project-creator";
+import { landing } from "./ui-handling";
 
 if (!localStorage.getItem("0")) {
   populateStorage();
@@ -14,6 +15,7 @@ if (!localStorage.getItem("0")) {
   myTodos.forEach((item) => {
     defaultProject.todos.push(item);
   });
+  landing();
 }
 
 export function sortTodos() {
