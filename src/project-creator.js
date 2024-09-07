@@ -8,11 +8,9 @@ function Project(name) {
   this.todos = [];
 }
 
-function createProject() {
-  const name = prompt("Enter the name of Project: ");
+function createProject(name) {
   const newProject = new Project(name);
   projects.push(newProject);
-  landing();
 }
 
 Project.prototype.assignTodos = function () {

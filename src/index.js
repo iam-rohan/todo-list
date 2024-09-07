@@ -6,9 +6,4 @@ import { landing } from "./ui-handling.js";
 
 // Attach to the global window object
 window.createATodo = createATodo;
-
-window.myTodos = myTodos;
-
 window.createProject = createProject;
-
-window.projects = projects;
