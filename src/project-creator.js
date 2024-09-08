@@ -13,15 +13,12 @@ function createProject(name) {
   projects.push(newProject);
 }
 
-Project.prototype.assignTodos = function () {
+Project.prototype.assignTodos = function (index) {
   myTodos.forEach((item, index) => {
     console.log(`Index: ${index}, Title: ${item.title}, Description: ${item.description}, Due Date: ${item.dueDate}, Priority: ${item.priority}`);
   });
 
-  const indexString = prompt(
-    "Which among the given Todos you would like to assign into the selected project? Enter their index seperated by commas: "
-  );
-  const indexes = indexString.split(",").map(Number);
+  const indexes = index.split(",").map(Number);
   if (!this.todos) {
     this.todos = [];
   }

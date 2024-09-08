@@ -1,6 +1,7 @@
 import { myTodos } from "./storage-handling";
 import { projects, createProject } from "./project-creator";
 import { createATodo } from "./todos-creator";
+import { format } from "date-fns";
 
 function landing() {
   //Main Container
@@ -142,7 +143,14 @@ function renderStructuredShow() {
       projectTodosView.appendChild(todoElement);
     });
 
+    //Button to assign todos to a project
+    const assignTodo = document.createElement("button");
+    assignTodo.classList.add("assignTodo");
+    assignTodo.textContent = "Assign Todo";
+    assignTodo.dataset.todoAssigncheck = project.name;
+
     projectView.appendChild(projectTodosView);
+    projectView.appendChild(assignTodo);
     projectsCollection.appendChild(projectView);
   });
 
@@ -161,9 +169,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (event.target.id === "todo-form") {
       const title = document.getElementById("title").value;
       const description = document.getElementById("description").value;
-      const dueDate = document.getElementById("dueDate").value;
+      const dateInput = document.getElementById("dueDate").value; // format is "yyyy-mm-dd"
+      const [year, month, day] = dateInput.split("-");
+      const formattedDate = format(new Date(year, month - 1, day), "MM/dd/yyyy"); // correctly create date
+
+      console.log(formattedDate);
+
       const priority = document.getElementById("priority").value;
-      createATodo(title, description, dueDate, priority);
+      createATodo(title, description, formattedDate, priority);
       console.log("Todo registered");
       console.log(myTodos);
     }
@@ -173,6 +186,13 @@ document.addEventListener("DOMContentLoaded", () => {
       createProject(projectName);
       console.log("Project registered");
       console.log(projects);
+    }
+
+    if (event.target.id === "todoList-form") {
+      const todosIndex = document.getElementById("todosIndex").value;
+      const assignButton = document.querySelector(".assignButton");
+      const projectIndex = assignButton.dataset.checkthis;
+      projects[projectIndex].assignTodos(todosIndex);
     }
 
     event.target.reset();
@@ -218,6 +238,54 @@ document.addEventListener("DOMContentLoaded", () => {
         </form>
       `;
     modal.style.display = "block";
+  });
+  const assignTodo = document.querySelectorAll(".assignTodo");
+  assignTodo.forEach((element) => {
+    element.addEventListener("click", () => {
+      modalContent.innerHTML = `
+      <h2>Select the desired Todos</h2>
+      <form id="todoList-form">
+        <label for="">Todo Index Seperated by commas:</label>
+        <input type="text" id="todosIndex" required>
+        <button class="assignButton" type="submit">Assign Todos</button>
+      </form>
+      <div class="todoIndexedList"></div>
+      `;
+      //To List all the Avaibale Todos
+      const todoIndexedList = document.querySelector(".todoIndexedList");
+      const assignButton = document.querySelector(".assignButton");
+      const projectView = element.closest(".aProjectView");
+      const projectName = projectView.querySelector(".projectName").textContent;
+      // console.log(projectName);
+      const projectIndex = projects.findIndex((project) => project.name === projectName);
+      // console.log(projectIndex);
+      assignButton.dataset.checkthis = projectIndex;
+      // assignButton.dataset.checkThis = docu;
+
+      myTodos.forEach((todo) => {
+        const todoElement = document.createElement("p");
+        todoElement.textContent = `Title: ${todo.title}, Description: ${todo.description}, Due Date: ${todo.dueDate}, Priority: ${todo.priority}`;
+        todoElement.classList.add("aProjectTodo");
+
+        // Apply background color based on priority
+        switch (todo.priority) {
+          case "High":
+            todoElement.classList.add("priority-high");
+            break;
+          case "Medium":
+            todoElement.classList.add("priority-medium");
+            break;
+          case "Low":
+            todoElement.classList.add("priority-low");
+            break;
+          default:
+            break;
+        }
+        todoIndexedList.appendChild(todoElement);
+      });
+
+      modal.style.display = "block";
+    });
   });
 
   closeModal.addEventListener("click", () => {
