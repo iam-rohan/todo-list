@@ -198,6 +198,12 @@ document.addEventListener("DOMContentLoaded", () => {
     event.target.reset();
     modal.style.display = "none";
     updateChanges();
+    const assignTodo = document.querySelectorAll(".assignTodo");
+    assignTodo.forEach((element) => {
+      element.addEventListener("click", () => {
+        updateAssignTodo(element);
+      });
+    });
   };
 
   document.addEventListener("submit", formSubmissionHandler);
@@ -239,10 +245,16 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
     modal.style.display = "block";
   });
+
   const assignTodo = document.querySelectorAll(".assignTodo");
   assignTodo.forEach((element) => {
     element.addEventListener("click", () => {
-      modalContent.innerHTML = `
+      updateAssignTodo(element);
+    });
+  });
+
+  function updateAssignTodo(element) {
+    modalContent.innerHTML = `
       <h2>Select the desired Todos</h2>
       <form id="todoList-form">
         <label for="">Todo Index Seperated by commas:</label>
@@ -251,42 +263,41 @@ document.addEventListener("DOMContentLoaded", () => {
       </form>
       <div class="todoIndexedList"></div>
       `;
-      //To List all the Avaibale Todos
-      const todoIndexedList = document.querySelector(".todoIndexedList");
-      const assignButton = document.querySelector(".assignButton");
-      const projectView = element.closest(".aProjectView");
-      const projectName = projectView.querySelector(".projectName").textContent;
-      // console.log(projectName);
-      const projectIndex = projects.findIndex((project) => project.name === projectName);
-      // console.log(projectIndex);
-      assignButton.dataset.checkthis = projectIndex;
-      // assignButton.dataset.checkThis = docu;
+    //To List all the Avaibale Todos
+    const todoIndexedList = document.querySelector(".todoIndexedList");
+    const assignButton = document.querySelector(".assignButton");
+    const projectView = element.closest(".aProjectView");
+    const projectName = projectView.querySelector(".projectName").textContent;
+    // console.log(projectName);
+    const projectIndex = projects.findIndex((project) => project.name === projectName);
+    // console.log(projectIndex);
+    assignButton.dataset.checkthis = projectIndex;
+    // assignButton.dataset.checkThis = docu;
 
-      myTodos.forEach((todo) => {
-        const todoElement = document.createElement("p");
-        todoElement.textContent = `Title: ${todo.title}, Description: ${todo.description}, Due Date: ${todo.dueDate}, Priority: ${todo.priority}`;
-        todoElement.classList.add("aProjectTodo");
+    myTodos.forEach((todo) => {
+      const todoElement = document.createElement("p");
+      todoElement.textContent = `Title: ${todo.title}, Description: ${todo.description}, Due Date: ${todo.dueDate}, Priority: ${todo.priority}`;
+      todoElement.classList.add("aProjectTodo");
 
-        // Apply background color based on priority
-        switch (todo.priority) {
-          case "High":
-            todoElement.classList.add("priority-high");
-            break;
-          case "Medium":
-            todoElement.classList.add("priority-medium");
-            break;
-          case "Low":
-            todoElement.classList.add("priority-low");
-            break;
-          default:
-            break;
-        }
-        todoIndexedList.appendChild(todoElement);
-      });
-
-      modal.style.display = "block";
+      // Apply background color based on priority
+      switch (todo.priority) {
+        case "High":
+          todoElement.classList.add("priority-high");
+          break;
+        case "Medium":
+          todoElement.classList.add("priority-medium");
+          break;
+        case "Low":
+          todoElement.classList.add("priority-low");
+          break;
+        default:
+          break;
+      }
+      todoIndexedList.appendChild(todoElement);
     });
-  });
+
+    modal.style.display = "block";
+  }
 
   closeModal.addEventListener("click", () => {
     modal.style.display = "none";
