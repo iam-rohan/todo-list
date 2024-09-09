@@ -1,4 +1,4 @@
-import { myTodos } from "./storage-handling";
+import { myTodos, populateStorage } from "./storage-handling";
 import { landing } from "./ui-handling";
 
 const projects = [];
@@ -11,6 +11,8 @@ function Project(name) {
 function createProject(name) {
   const newProject = new Project(name);
   projects.push(newProject);
+
+  populateStorage();
 }
 
 Project.prototype.assignTodos = function (index) {

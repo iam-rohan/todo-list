@@ -122,9 +122,18 @@ function renderStructuredShow() {
     projectTodosView.classList.add("projectTodosView");
 
     project.todos.forEach((todo) => {
-      const todoElement = document.createElement("p");
-      todoElement.textContent = `Title: ${todo.title}, Description: ${todo.description}, Due Date: ${todo.dueDate}, Priority: ${todo.priority}`;
+      const checkBox = document.createElement("input");
+      const labelCheckBox = document.createElement("label");
+      labelCheckBox.setAttribute("for", "todoCheckBox");
+      checkBox.classList.add("todoCheckBox");
+      checkBox.setAttribute("type", "checkbox");
+      const todoElement = document.createElement("div");
+      const todoDetails = document.createElement("p");
+      todoDetails.textContent = `Title: ${todo.title}, Description: ${todo.description}, Due Date: ${todo.dueDate}, Priority: ${todo.priority}`;
       todoElement.classList.add("aProjectTodo");
+      todoElement.appendChild(labelCheckBox);
+      todoElement.appendChild(checkBox);
+      todoElement.appendChild(todoDetails);
 
       // Apply background color based on priority
       switch (todo.priority) {
@@ -140,6 +149,7 @@ function renderStructuredShow() {
         default:
           break;
       }
+
       projectTodosView.appendChild(todoElement);
     });
 
@@ -156,9 +166,9 @@ function renderStructuredShow() {
 
   structuredShow.appendChild(projectsCollection);
 }
-
 document.addEventListener("DOMContentLoaded", () => {
   // Modal elements
+
   const modal = document.getElementById("modal");
   const modalContent = document.getElementById("modal-body");
   const closeModal = document.querySelector(".close");
@@ -177,8 +187,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const priority = document.getElementById("priority").value;
       createATodo(title, description, formattedDate, priority);
-      console.log("Todo registered");
-      console.log(myTodos);
     }
 
     if (event.target.id === "project-form") {
@@ -204,11 +212,19 @@ document.addEventListener("DOMContentLoaded", () => {
         updateAssignTodo(element);
       });
     });
+
+    const checkBoxes = document.querySelectorAll(".todoCheckBox");
+    checkBoxes.forEach((checkBox) => {
+      checkBox.addEventListener("click", () => {
+        updateCheckBox(checkBox);
+      });
+    });
   };
 
   document.addEventListener("submit", formSubmissionHandler);
 
   const createTodoButton = document.querySelector(".todoCreate");
+
   createTodoButton.addEventListener("click", () => {
     console.log("Create Todo button clicked");
     modalContent.innerHTML = `
@@ -253,6 +269,27 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  const checkBoxes = document.querySelectorAll(".todoCheckBox");
+  checkBoxes.forEach((checkBox) => {
+    checkBox.addEventListener("click", () => {
+      updateCheckBox(checkBox);
+    });
+  });
+
+  function updateCheckBox(checkBox) {
+    const todoBox = checkBox.closest(".aProjectTodo");
+    const todoDetails = todoBox.querySelector("p").textContent;
+
+    //The Title of the clicked todo
+    const todoTitle = todoDetails.split(",")[0].replace("Title: ", "").trim();
+
+    // Index check based on the title
+    const todoIndex = myTodos.findIndex((todo) => todo.title === todoTitle);
+
+    myTodos.pop(todoIndex);
+    todoBox.remove();
+  }
+
   function updateAssignTodo(element) {
     modalContent.innerHTML = `
       <h2>Select the desired Todos</h2>
@@ -268,15 +305,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const assignButton = document.querySelector(".assignButton");
     const projectView = element.closest(".aProjectView");
     const projectName = projectView.querySelector(".projectName").textContent;
-    // console.log(projectName);
     const projectIndex = projects.findIndex((project) => project.name === projectName);
-    // console.log(projectIndex);
     assignButton.dataset.checkthis = projectIndex;
-    // assignButton.dataset.checkThis = docu;
 
-    myTodos.forEach((todo) => {
+    myTodos.forEach((todo, index) => {
       const todoElement = document.createElement("p");
-      todoElement.textContent = `Title: ${todo.title}, Description: ${todo.description}, Due Date: ${todo.dueDate}, Priority: ${todo.priority}`;
+      todoElement.textContent = `INDEX:${index}, Title: ${todo.title}, Description: ${todo.description}, Due Date: ${todo.dueDate}, Priority: ${todo.priority}`;
       todoElement.classList.add("aProjectTodo");
 
       // Apply background color based on priority
