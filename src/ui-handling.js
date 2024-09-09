@@ -37,13 +37,12 @@ function landing() {
   mainView.appendChild(creationSection);
   container.appendChild(mainView);
 
+  sideViewChanges();
   updateChanges();
 }
-
-// Render the changes happening in the entries only
-function updateChanges() {
+//Render the changes happening in the sideView only
+function sideViewChanges() {
   const container = document.querySelector(".container");
-  const mainView = document.querySelector(".mainView");
 
   //SideView Section
   const sideView = document.createElement("div");
@@ -77,7 +76,11 @@ function updateChanges() {
   sideView.appendChild(todosSideView);
   sideView.appendChild(projectsSideView);
   container.appendChild(sideView);
+}
 
+// Render the changes happening in the entries only
+function updateChanges() {
+  const mainView = document.querySelector(".mainView");
   // Clear only the structuredShow section if it exists
   let structuredShow = document.querySelector(".structuredShow");
   if (structuredShow) {
@@ -205,20 +208,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     event.target.reset();
     modal.style.display = "none";
-    updateChanges();
+
     const assignTodo = document.querySelectorAll(".assignTodo");
     assignTodo.forEach((element) => {
       element.addEventListener("click", () => {
         updateAssignTodo(element);
       });
     });
-
     const checkBoxes = document.querySelectorAll(".todoCheckBox");
     checkBoxes.forEach((checkBox) => {
       checkBox.addEventListener("click", () => {
         updateCheckBox(checkBox);
       });
     });
+    updateChanges();
   };
 
   document.addEventListener("submit", formSubmissionHandler);
@@ -288,6 +291,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     myTodos.pop(todoIndex);
     todoBox.remove();
+    sideViewChanges();
   }
 
   function updateAssignTodo(element) {
