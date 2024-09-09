@@ -1,10 +1,12 @@
-import { compareAsc } from "date-fns";
-export let myTodos = [];
+import { format, compareAsc } from "date-fns";
+
+export const myTodos = [];
 
 import { Project, projects } from "./project-creator";
 import { landing } from "./ui-handling";
 
 if (!localStorage.getItem("0")) {
+  initializeDefaultTodos();
   populateStorage();
   console.log("Here the content on the library is being pushed to the storage");
 } else {
@@ -52,6 +54,39 @@ export function populateStorage() {
     });
   } else {
     console.log("Sorry such storage is not available!");
+  }
+}
+
+function initializeDefaultTodos() {
+  if (storageAvailable("localStorage")) {
+    // Example default todo
+    const defaultTodo = [
+      {
+        title: "Welcome",
+        description: "Your first todo item!",
+        dueDate: format(new Date().toISOString().slice(0, 10), "MM/dd/yyyy"), // Today's date
+        priority: "High",
+      },
+      {
+        title: "Buy groceries",
+        description: "Milk, Bread, Eggs, Butter",
+        dueDate: "09/15/2024",
+        priority: "Low",
+      },
+      {
+        title: "Finish project report",
+        description: "Complete the final draft of the report",
+        dueDate: "09/20/2024",
+        priority: "Medium",
+      },
+    ];
+
+    defaultTodo.forEach((item) => {
+      myTodos.push(item);
+    });
+    localStorage.setItem("0", JSON.stringify(defaultTodo));
+  } else {
+    console.log("Sorry, localStorage is not available!");
   }
 }
 

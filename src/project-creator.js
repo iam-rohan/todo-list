@@ -16,10 +16,6 @@ function createProject(name) {
 }
 
 Project.prototype.assignTodos = function (index) {
-  myTodos.forEach((item, index) => {
-    console.log(`Index: ${index}, Title: ${item.title}, Description: ${item.description}, Due Date: ${item.dueDate}, Priority: ${item.priority}`);
-  });
-
   const indexes = index.split(",").map(Number);
   if (!this.todos) {
     this.todos = [];

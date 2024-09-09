@@ -208,6 +208,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     event.target.reset();
     modal.style.display = "none";
+    updateChanges();
+    sideViewChanges();
 
     const assignTodo = document.querySelectorAll(".assignTodo");
     assignTodo.forEach((element) => {
@@ -221,7 +223,6 @@ document.addEventListener("DOMContentLoaded", () => {
         updateCheckBox(checkBox);
       });
     });
-    updateChanges();
   };
 
   document.addEventListener("submit", formSubmissionHandler);
@@ -288,9 +289,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Index check based on the title
     const todoIndex = myTodos.findIndex((todo) => todo.title === todoTitle);
-
-    myTodos.pop(todoIndex);
+    console.log(todoIndex);
+    if (todoIndex !== -1) {
+      myTodos.splice(todoIndex, 1); // Removes the todo at the given index
+    }
     todoBox.remove();
+
     sideViewChanges();
   }
 
